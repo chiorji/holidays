@@ -1,0 +1,12 @@
+.banner {
+  background: url(./img/holiday.png);
+  min-height: 30vmax;
+  background-size: 100% 100%;
+}
+
+.app-name {
+  min-height: 20vmax;
+  pointer-events: none;
+}
+/* 07030495463 */
+
