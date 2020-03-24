@@ -34,7 +34,7 @@ export default function FormPane() {
 
   return (
     <Form
-      className="mb-5 mt-n3 p-2 p-lg-5 bg-white mt-lg-n5 rounded col-10 col-lg-6 mx-auto"
+      className="mb-5 p-2 p-lg-5 bg-white mt-lg-n5 rounded col-10 col-lg-6 mx-auto"
       onSubmit={getHolidayDetails}
     >
       <Form.Group controlId="country">
