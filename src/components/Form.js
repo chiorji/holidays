@@ -1,67 +1,52 @@
-import React, { useEffect, useState, createRef } from "react";
-import { Form, Button } from "react-bootstrap";
-import fetcher, { datalist } from "../utils/fetcher";
+import React from 'react'
 
-export default function FormPane() {
-  const apikey = process.env.REACT_APP_API_KEY;
-  const [countryList, setCountryList] = useState([]);
-  const [year, setYear] = useState("2019");
-  const country = createRef();
+const HolidayForm = ({
+	countryChange,
+	countries,
+	year,
+	yearChange,
+	getHolidaysInfo,
+}) => (
+	<section className='card col-12 col-sm-6 p-0 offset-sm-3 mt-lg-n5'>
+		<div className='card-header bg-warning text-dark'>
+			<h3 className='text-center'>Get country holidays</h3>
+		</div>
+		<div className='card-body p-sm-5'>
+			<form onSubmit={getHolidaysInfo}>
+				<div className='form-group'>
+					<label htmlFor='country' className='form-label font-weight-bold'>
+						Select Country
+					</label>
+					<select
+						id='country'
+						onChange={countryChange}
+						className='form-control'>
+						{countries &&
+							countries.map(country => (
+								<option key={country.code.toString()} value={country.code}>
+									{country.name}
+								</option>
+							))}
+					</select>
+				</div>
+				<div className='form-group'>
+					<label htmlFor='year' className='form-label font-weight-bold'>
+						Year
+					</label>
+					<input
+						type='text'
+						id='year'
+						value={year}
+						onChange={yearChange}
+						className='disabled form-control'
+					/>
+				</div>
+				<button type='submit' className='btn btn-danger btn-block'>
+					Get Holidays
+				</button>
+			</form>
+		</div>
+	</section>
+)
 
-  const getHolidayDetails = e => {
-    e.preventDefault();
-    console.log("Query %s, %s", country.current.value, year);
-    fetcher({ apikey, country: country.current.value, year })
-      .then(response => {
-        console.log(response);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  };
-
-  useEffect(() => {
-    console.log("Key", apikey + "-0890e3");
-    datalist({ apikey })
-      .then(response => {
-        console.log(response);
-        setCountryList(response.countries);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  }, [apikey]);
-
-  return (
-    <Form
-      className="mb-5 p-2 p-lg-5 bg-white mt-lg-n5 rounded col-10 col-lg-6 mx-auto"
-      onSubmit={getHolidayDetails}
-    >
-      <Form.Group controlId="country">
-        <Form.Label className="font-weight-bold">Select a country</Form.Label>
-        <Form.Control as="select" ref={country}>
-          {countryList &&
-            countryList.map(country => (
-              <option key={country.code.toString()} value={country.code}>
-                {country.name}
-              </option>
-            ))}
-        </Form.Control>
-      </Form.Group>
-      <Form.Group controlId="year">
-        <Form.Label className="font-weight-bold">Year</Form.Label>
-        <Form.Control
-          as="select"
-          placeholder="Year (e.g 2020)"
-          value={year}
-          onChange={e => setYear(e.target.value)}
-        >
-          <option>{year}</option>
-        </Form.Control>
-      </Form.Group>
-      <Button variant="danger" type="submit" className="btn-block" size="lg">
-        Get Holidays Details
-      </Button>
-    </Form>
-  );
-}
+export default HolidayForm
