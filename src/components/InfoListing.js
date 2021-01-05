@@ -1,6 +1,6 @@
 import React from 'react'
 
-const HolidayInfo = ({ holidays }) =>
+const InfoListing = ({ holidays }) =>
 	holidays.map((holiday, index) => (
 		<tr key={index}>
 			<td>{holiday.name}</td>
@@ -12,4 +12,4 @@ const HolidayInfo = ({ holidays }) =>
 		</tr>
 	))
 
-export default HolidayInfo
+export default InfoListing

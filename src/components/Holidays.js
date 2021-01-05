@@ -1,9 +1,9 @@
 import React from 'react'
 
-const HolidayData = ({ holidays }) => {
+const Holidays = ({ holidays }) => {
 	return (
-		<div className='table-responsive mt-5'>
-			<table className='table table-striped table-hover table-sm rounded col-12 col-sm-8 offset-sm-2 bg-white'>
+		<div className='table-responsive mt-5 border rounded col-11 mx-auto p-0 bg-light shadow-lg'>
+			<table className='table table-striped table-hover table-lg w-100 bg-white'>
 				<thead className="table-head bg-warning text-dark">
 					<tr>
 						<th>Country Code</th>
@@ -29,4 +29,4 @@ const HolidayData = ({ holidays }) => {
 	)
 }
 
-export default HolidayData
+export default Holidays

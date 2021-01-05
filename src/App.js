@@ -1,7 +1,6 @@
 import React, { useState, useEffect, Suspense } from 'react'
-import getCountries from './utils/getCountries'
-import getHolidays from './utils/getHolidays'
-import HolidayData from './components/HolidayData'
+import Utils from './utils'
+import HolidayData from './components/Holidays'
 import Footer from './components/Footer'
 
 const Hero = React.lazy(() => import('./components/Hero'))
@@ -13,34 +12,44 @@ const App = () => {
 	const [year, setYear] = useState('2020')
 	const [holidays, setHolidays] = useState([])
 	const [isLoading, setIsLoading] = useState(false)
-	const apikey = process.env.REACT_APP_API_KEY
+	const [listFetchError, setListFetchError] = useState('')
+	const [getError, setGetError] = useState('')
 
-	const handleGetRequest = e => {
+	const handleGetHolidays = e => {
 		e.preventDefault()
 		setIsLoading(true)
-		getHolidays({ apikey, country, year })
-			.then(holiday => {
-				// console.log(holiday.holidays)
-				setHolidays(holiday.holidays)
-				setIsLoading(false)
-			})
-			.catch(err => {
-				setIsLoading(false)
-				console.log(err)
-			})
-		// console.log('Holidays :::', holidays)
+		setGetError('')
+		Utils.getHolidays(country, year).then(result => {
+			setGetError('')
+			setIsLoading(false)
+			setHolidays(result.holidays)
+		}).catch(err => {
+			console.log(err.name, err.message)
+			setIsLoading(false)
+			setGetError(err.message)
+		})
+	}
+
+	const fetchCountries = () => {
+		return Utils.getCountries().then(result => {
+			setListFetchError('')
+			setCountries(result.countries)
+			setCountry("AD")
+		}).catch(err => {
+			setListFetchError(err.message)
+			console.log(err.name, err.message)
+		})
+	}
+
+	const refreshFetch = (e) => {
+		e.preventDefault()
+		setListFetchError('')
+		fetchCountries()
 	}
 
 	useEffect(() => {
-		// fetch and populate countries
-		getCountries(apikey)
-			.then(result => {
-				setCountries(result.countries)
-			})
-			.catch(err => console.log(err))
-			// set the first country
-			setCountry("AD")
-	}, [apikey])
+		fetchCountries()
+	}, [])
 
 	return (
 		<>
@@ -52,7 +61,9 @@ const App = () => {
 					countryChange={e => setCountry(e.target.value)}
 					year={year}
 					yearChange={e => setYear('2019')}
-					getHolidaysInfo={handleGetRequest}
+					getHolidaysInfo={handleGetHolidays}
+					countryListError={listFetchError}
+					refreshFetch={refreshFetch}
 				/>
 			</Suspense>
 			{isLoading && (
@@ -60,6 +71,7 @@ const App = () => {
 					Loading holidays data, please wait...
 				</div>
 			)}
+			{getError && <p className='lead text-center text-danger mt-3 p-3'>{getError}</p>}
 			{holidays.length >= 1 ?  <HolidayData holidays={holidays}/> : <div/>}
 			<Footer />
 		</>
