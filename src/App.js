@@ -24,7 +24,6 @@ const App = () => {
 			setIsLoading(false)
 			setHolidays(result.holidays)
 		}).catch(err => {
-			console.log(err.name, err.message)
 			setIsLoading(false)
 			setGetError(err.message)
 		})
@@ -37,7 +36,6 @@ const App = () => {
 			setCountry("AD")
 		}).catch(err => {
 			setListFetchError(err.message)
-			console.log(err.name, err.message)
 		})
 	}
 
