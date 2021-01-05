@@ -10,7 +10,7 @@ const Form = React.lazy(() => import('./components/Form'))
 const App = () => {
 	const [countries, setCountries] = useState([])
 	const [country, setCountry] = useState('')
-	const [year, setYear] = useState('2019')
+	const [year, setYear] = useState('2020')
 	const [holidays, setHolidays] = useState([])
 	const [isLoading, setIsLoading] = useState(false)
 	const apikey = process.env.REACT_APP_API_KEY
