@@ -9,7 +9,7 @@ const Form = React.lazy(() => import('./components/Form'))
 const App = () => {
 	const [countries, setCountries] = useState([])
 	const [country, setCountry] = useState('')
-	const [year, setYear] = useState('2020')
+	const [year, setYear] = useState('')
 	const [holidays, setHolidays] = useState([])
 	const [isLoading, setIsLoading] = useState(false)
 	const [listFetchError, setListFetchError] = useState('')
@@ -49,7 +49,8 @@ const App = () => {
 
 	useEffect(() => {
 		fetchCountries()
-	}, [])
+		setYear(new Date().getFullYear() - 1)
+	}, [year])
 
 	return (
 		<>
